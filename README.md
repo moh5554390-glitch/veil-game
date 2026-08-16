@@ -1,2 +1,2 @@
-# veil-game
-Veil mystery game - multiplayer
+# Veil Game
+Mystery multiplayer. Solo, hotseat, online PeerJS rooms.
