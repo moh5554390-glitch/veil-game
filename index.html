@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1"/>
+<title>Veil</title>
+<meta name="theme-color" content="#07070d"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<link rel="manifest" href="/manifest.json"/>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{--bg:#07070d;--card:#10101c;--p:#7b5cff;--p2:#3b82f6;--g:#a78bfa;--t:#e8eaf2;--m:#8b93a7;--b:rgba(123,92,255,.22);--d:#ef4444;--s:#22c55e}
+*{box-sizing:border-box;margin:0;padding:0}html,body,#app{height:100%;height:100dvh}
+body{font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden}
+.hidden{display:none!important}
+.page{height:100%;max-width:480px;margin:0 auto;padding:1.15rem;padding-bottom:calc(1.15rem + env(safe-area-inset-bottom));overflow-y:auto;position:relative}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:.88rem 1.3rem;border-radius:999px;font-weight:600;border:none;cursor:pointer;font-size:1rem}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 0 24px rgba(123,92,255,.4)}
+.btn-o{background:transparent;border:1px solid var(--b);color:var(--t)}
+.btn-g{background:transparent;border:none;color:var(--m);width:auto;padding:.4rem .7rem;font-size:.85rem}
+.input{width:100%;padding:.88rem 1rem;background:var(--bg);border:1px solid var(--b);border-radius:12px;color:var(--t);font-size:1rem;margin-bottom:.7rem}
+.card{background:var(--card);border:1px solid var(--b);border-radius:16px;padding:1.15rem;margin-bottom:.85rem}
+.logo{font-size:2.4rem;font-weight:700;text-align:center;background:linear-gradient(90deg,#c4b5fd,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tag{text-align:center;color:var(--g);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;margin:.35rem 0 1.2rem}
+.muted{color:var(--m);font-size:.88rem}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.bar{display:flex;gap:.3rem;margin-bottom:1rem}.dot{flex:1;height:4px;border-radius:99px;background:rgba(123,92,255,.2)}.dot.on{background:linear-gradient(90deg,var(--p),var(--p2))}.dot.ok{background:var(--g);opacity:.6}
+.vid{width:100%;border-radius:12px;margin-bottom:.6rem;background:#0a0a14;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--m)}
+.opt{display:block;width:100%;text-align:right;padding:.85rem 1rem;margin-bottom:.5rem;background:var(--bg);border:1px solid var(--b);border-radius:12px;color:var(--t);cursor:pointer}
+.opt.sel{border-color:var(--g);background:rgba(123,92,255,.12)}
+.stats{display:flex;justify-content:space-around;text-align:center}.stats .n{font-size:1.2rem;font-weight:700;color:var(--g)}.stats .l{font-size:.75rem;color:var(--m)}
+.pill{display:inline-block;padding:.2rem .55rem;border-radius:999px;background:rgba(123,92,255,.15);color:var(--g);font-size:.75rem}
+.codeBox{font-size:1.1rem;letter-spacing:.05em;text-align:center;font-weight:700;color:var(--g);padding:.8rem;background:var(--bg);border-radius:12px;margin:.5rem 0;word-break:break-all}
+#intro{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(123,92,255,.2),transparent 55%),var(--bg)}
+#intro .il{font-size:3.2rem;font-weight:700;background:linear-gradient(90deg,#c4b5fd,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:in 1.4s ease forwards .3s}
+#intro .it{opacity:0;animation:in 1.2s ease forwards 1.1s;margin-top:.6rem;letter-spacing:.22em;font-size:.78rem;color:var(--g)}
+#intro .line{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);margin:1.4rem auto;animation:ln 1s ease forwards 1.8s}
+#intro .sk{position:absolute;bottom:2rem;opacity:0;animation:in .8s ease forwards 2.4s}
+@keyframes in{to{opacity:1}}@keyframes ln{to{width:120px;opacity:.7}}
+</style></head><body>
+<div id="app">
+<div id="intro" class="page"><div class="il">Veil</div><p class="it">EVERY CLUE HIDES THE TRUTH</p><div class="line"></div>
+<button class="btn btn-o sk" style="width:auto;padding:.55rem 1.4rem;font-size:.85rem" id="skip">تخطي / دخول</button></div>
+<div id="login" class="page hidden" style="display:flex;flex-direction:column;justify-content:center">
+<div class="logo">Veil</div><p class="tag">Every Clue Hides The Truth</p>
+<div class="card"><input class="input" id="user" placeholder="اسمك"/>
+<button class="btn btn-p" id="goLogin">دخول</button>
+<p class="muted" id="err" style="color:var(--d);text-align:center;margin-top:.6rem"></p></div></div>
+<div id="home" class="page hidden">
+<div class="top"><div><div class="logo" style="font-size:1.45rem;text-align:right">Veil</div><p class="muted" id="hi">مرحبًا</p></div>
+<button class="btn btn-g" id="out">خروج</button></div>
+<div class="card"><div class="stats">
+<div><div class="n" id="lv">1</div><div class="l">Level</div></div>
+<div><div class="n" id="pts">0</div><div class="l">Vill Points</div></div>
+<div><div class="n" id="xp">0</div><div class="l">XP</div></div></div></div>
+<button class="btn btn-p" style="margin-bottom:.5rem" id="btnSolo">لعب منفرد</button>
+<button class="btn btn-o" style="margin-bottom:.5rem" id="btnHotseat">غرفة محلية (تمرير الجهاز)</button>
+<button class="btn btn-o" style="margin-bottom:.5rem" id="btnOnlineHost">إنشاء غرفة أونلاين</button>
+<div class="card"><p style="font-weight:600;margin-bottom:.5rem">انضمام لغرفة أونلاين</p>
+<div style="display:flex;gap:.5rem">
+<input class="input" id="joinCode" placeholder="كود الغرفة" style="margin:0;flex:1"/>
+<button class="btn btn-p" style="width:auto;padding:.88rem 1.1rem" id="btnJoinOnline">انضم</button></div>
+<p class="muted" id="netStatus" style="margin-top:.5rem;font-size:.8rem"></p></div>
+<div id="caseList"></div></div>
+<div id="onlineLobby" class="page hidden">
+<div class="top"><div><h2 style="font-size:1.15rem">غرفة أونلاين</h2><p class="muted" id="olMeta"></p></div>
+<button class="btn btn-g" id="leaveOnline">مغادرة</button></div>
+<div class="card"><p class="muted">كود الغرفة — انسخه كاملًا</p>
+<div class="codeBox" id="roomCodeDisplay">······</div>
+<p class="muted" id="hostHint" style="font-size:.8rem;text-align:center"></p></div>
+<div class="card"><p style="font-weight:600;margin-bottom:.5rem">المتصلون <span class="muted" id="olCount"></span></p><div id="olPlayers"></div></div>
+<select id="olCase" class="input"></select>
+<button class="btn btn-p hidden" id="btnStartOnline">بدء القضية (المضيف)</button>
+<p class="muted" id="olWait" style="text-align:center;margin-top:.5rem"></p></div>
+<div id="lobby" class="page hidden">
+<div class="top"><div><h2 style="font-size:1.15rem">غرفة محلية</h2></div>
+<button class="btn btn-g" id="leaveLobby">رجوع</button></div>
+<div class="card"><div id="playerList"></div>
+<div style="display:flex;gap:.5rem;margin-top:.6rem">
+<input class="input" id="newPlayer" placeholder="اسم لاعب" style="margin:0;flex:1"/>
+<button class="btn btn-o" style="width:auto;padding:.88rem 1rem" id="addPlayer">إضافة</button></div></div>
+<select id="lobbyCase" class="input"></select>
+<button class="btn btn-p" id="startHotseat">بدء وتوزيع الأدوار</button></div>
+<div id="pass" class="page hidden" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+<div class="card"><p class="tag">PASS THE DEVICE</p><h2 style="margin:.5rem 0;color:var(--g)" id="passName">—</h2></div>
+<button class="btn btn-p" id="revealRole">أظهر دوري</button></div>
+<div id="roles" class="page hidden">
+<div class="top"><h2 style="font-size:1.15rem">اختر دورك</h2></div>
+<p class="muted" id="caseHint" style="margin-bottom:.75rem"></p><div id="roleList"></div>
+<button class="btn btn-p" id="confirmRole">تأكيد وبدء</button>
+<button class="btn btn-o" style="margin-top:.5rem" id="backHome">رجوع</button></div>
+<div id="game" class="page hidden">
+<div class="top"><div><h2 style="font-size:1.1rem" id="gTitle">القضية</h2><p class="muted" id="gPhase"></p></div>
+<button class="btn btn-g" id="exit">إنهاء</button></div>
+<div class="bar" id="bar"></div><div id="body"></div>
+<button class="btn btn-p" style="margin-top:.85rem" id="next">متابعة</button></div>
+</div>
+<script>
+const STORE='veil_play_v4';
+const PHASES=['intro','roles','evidence','discussion','voting','finale'];
+const PHASE_AR={intro:'الإنترو',roles:'الأدوار',evidence:'الأدلة',discussion:'النقاش',voting:'التصويت',finale:'النهاية'};
+const CASES=[{id:'hallway',title:'الظل في الممر',blurb:'قصر وصرخة ليلية.',intro:'منتصف الليل. صرخة ثم صمت. الباب الخلفي مفتوح.',roles:[{key:'detective',name:'المحقق',desc:'بعد الحادثة.',priv:'بصمة غير مسجّلة على الباب.'},{key:'servant',name:'الخادم',desc:'تعرف الممرات.',priv:'تبتز الضحية. الرسالة بخطك.'},{key:'heir',name:'الوريث',desc:'وريث القصر.',priv:'سمعت خطوات ولم تخرج.'},{key:'guest',name:'الضيف',desc:'دعوة خاصة.',priv:'لم أقترب من المكتبة بعد منتصف الليل.'}],evidence:[{t:'المكتبة',d:'الجثة على السجادة.'},{t:'رسالة',d:'لو تكلّمت لن تشرق شمسك.'},{t:'شهادة',d:'أقدام 2:10.'},{t:'الباب',d:'طين وبصمة.'}],votes:[{id:'guest',l:'الضيف'},{id:'servant',l:'الخادم'},{id:'heir',l:'الوريث'},{id:'detective',l:'المحقق'}],correct:'servant',finale:'الخادم كان يبتز الضحية.'},{id:'ferry',title:'آخر رحلة العبّارة',blurb:'راكب مفقود.',intro:'صباحًا يُفقد راكب. الغرفة مغلقة من الداخل.',roles:[{key:'captain',name:'القبطان',desc:'مسؤول السفينة.',priv:'غيّرت المسار.'},{key:'partner',name:'الشريك',desc:'شريك تجاري.',priv:'اكتشف تزويرًا.'},{key:'journalist',name:'الصحفية',desc:'تقرير.',priv:'رأيت الشريك قرب الكبائن.'},{key:'steward',name:'المضيف',desc:'خدمة.',priv:'سلّمت مفتاحًا للشريك.'}],evidence:[{t:'الكابينة',d:'مقفل من الداخل.'},{t:'الحسابات',d:'صفحة ممزقة.'},{t:'شهادة',d:'شخص 1:40.'},{t:'معطف',d:'أكمام مبللة.'}],votes:[{id:'captain',l:'القبطان'},{id:'partner',l:'الشريك'},{id:'journalist',l:'الصحفية'},{id:'steward',l:'المضيف'}],correct:'partner',finale:'الشريك هو الجاني.'}];
+let S={user:null,mode:'solo',caseId:null,role:null,phase:'intro',vote:null,players:[],assignments:{},revealIndex:0,votes:{},votePlayerIndex:0};
+let peer=null,connections={},isHost=false,myPeerId=null,roomPlayers=[];
+function C(){return CASES.find(c=>c.id===S.caseId)||CASES[0]}
+function show(n){['intro','login','home','onlineLobby','lobby','pass','roles','game'].forEach(v=>{const el=document.getElementById(v);if(el)el.classList.toggle('hidden',v!==n)})}
+function save(){if(S.user)localStorage.setItem(STORE,JSON.stringify({user:S.user,t:Date.now()}))}
+function load(){try{const d=JSON.parse(localStorage.getItem(STORE)||'null');if(d&&d.user&&Date.now()-d.t<30*864e5)return d.user}catch(e){}return null}
+function setNet(m){const el=document.getElementById('netStatus');if(el)el.textContent=m||''}
+let timer;function boot(){show('intro');clearTimeout(timer);timer=setTimeout(afterIntro,3600)}
+function afterIntro(){clearTimeout(timer);const u=load();if(u){S.user=u;home()}else show('login')}
+document.getElementById('skip').onclick=afterIntro;
+document.getElementById('goLogin').onclick=function(){const n=document.getElementById('user').value.trim();if(n.length<2){document.getElementById('err').textContent='أدخل اسمًا';return}S.user={name:n,level:1,xp:0,pts:0};save();home()};
+document.getElementById('out').onclick=function(){cleanupPeer();localStorage.removeItem(STORE);S.user=null;show('login')};
+function home(){document.getElementById('hi').textContent='مرحبًا، '+S.user.name;document.getElementById('lv').textContent=S.user.level;document.getElementById('pts').textContent=S.user.pts;document.getElementById('xp').textContent=S.user.xp;document.getElementById('caseList').innerHTML=CASES.map(c=>'<button type="button" class="btn btn-o" style="margin-bottom:.45rem;text-align:right" data-id="'+c.id+'"><strong>'+c.title+'</strong><br><span class="muted">'+c.blurb+'</span></button>').join('');document.querySelectorAll('#caseList button').forEach(function(b){b.onclick=function(){S.mode='solo';S.caseId=b.getAttribute('data-id');S.role=null;renderRolePick();show('roles')}});show('home')}
+document.getElementById('btnSolo').onclick=function(){S.mode='solo';S.caseId=CASES[0].id;S.role=null;renderRolePick();show('roles')};
+document.getElementById('btnHotseat').onclick=function(){S.mode='hotseat';S.players=[{name:S.user.name}];S.caseId=CASES[0].id;S.assignments={};S.votes={};S.revealIndex=0;document.getElementById('lobbyCase').innerHTML=CASES.map(c=>'<option value="'+c.id+'">'+c.title+'</option>').join('');renderLobby();show('lobby')};
+function cleanupPeer(){try{Object.values(connections).forEach(function(c){try{c.close()}catch(e){}})}catch(e){}connections={};if(peer){try{peer.destroy()}catch(e){}peer=null}isHost=false;myPeerId=null;roomPlayers=[]}
+document.getElementById('btnOnlineHost').onclick=function(){setNet('جاري إنشاء الغرفة...');cleanupPeer();if(typeof Peer==='undefined'){setNet('تحقق من الإنترنت');return}isHost=true;peer=new Peer();peer.on('open',function(id){myPeerId=id;roomPlayers=[{peerId:id,name:S.user.name,isHost:true}];document.getElementById('roomCodeDisplay').textContent=id;document.getElementById('hostHint').textContent='انسخ الكود كاملًا وأرسله';document.getElementById('olMeta').textContent='المضيف';document.getElementById('olCase').innerHTML=CASES.map(c=>'<option value="'+c.id+'">'+c.title+'</option>').join('');document.getElementById('btnStartOnline').classList.remove('hidden');document.getElementById('olWait').textContent='بانتظار اللاعبين...';renderOlPlayers();show('onlineLobby');setNet('')});peer.on('connection',function(conn){connections[conn.peer]=conn;conn.on('data',function(msg){handlePeerMsg(conn,msg)});conn.on('close',function(){delete connections[conn.peer];roomPlayers=roomPlayers.filter(function(p){return p.peerId!==conn.peer});broadcast({type:'players',players:roomPlayers});renderOlPlayers()})});peer.on('error',function(err){setNet('خطأ: '+err.type)})};
+document.getElementById('btnJoinOnline').onclick=function(){var code=document.getElementById('joinCode').value.trim();if(!code){setNet('أدخل الكود');return}setNet('جاري الاتصال...');cleanupPeer();if(typeof Peer==='undefined'){setNet('تحقق من الإنترنت');return}isHost=false;peer=new Peer();peer.on('open',function(id){myPeerId=id;var conn=peer.connect(code,{reliable:true});connections[code]=conn;conn.on('open',function(){conn.send({type:'hello',name:S.user.name,peerId:id});setNet('متصل');document.getElementById('roomCodeDisplay').textContent=code;document.getElementById('hostHint').textContent='ضيف — بانتظار المضيف';document.getElementById('olMeta').textContent='ضيف';document.getElementById('btnStartOnline').classList.add('hidden');document.getElementById('olWait').textContent='بانتظار بدء القضية...';document.getElementById('olCase').innerHTML=CASES.map(c=>'<option value="'+c.id+'">'+c.title+'</option>').join('');show('onlineLobby')});conn.on('data',function(msg){handlePeerMsg(conn,msg)});conn.on('error',function(){setNet('فشل الاتصال')})});peer.on('error',function(err){setNet('خطأ: '+err.type)})};
+function handlePeerMsg(conn,msg){if(!msg||!msg.type)return;if(msg.type==='hello'&&isHost){if(!roomPlayers.some(function(p){return p.peerId===msg.peerId}))roomPlayers.push({peerId:msg.peerId,name:msg.name,isHost:false});conn.send({type:'players',players:roomPlayers});broadcast({type:'players',players:roomPlayers});renderOlPlayers()}if(msg.type==='players'){roomPlayers=msg.players||[];renderOlPlayers()}if(msg.type==='start')beginOnlineGame(msg);if(msg.type==='phase'){S.phase=msg.phase;if(msg.vote)S.vote=msg.vote;renderGame();show('game')}if(msg.type==='vote')S.votes[msg.name]=msg.choice}
+function broadcast(msg){Object.values(connections).forEach(function(c){try{if(c.open)c.send(msg)}catch(e){}})}
+function renderOlPlayers(){document.getElementById('olCount').textContent='('+roomPlayers.length+')';document.getElementById('olPlayers').innerHTML=roomPlayers.map(function(p){return '<div style="padding:.45rem 0;border-bottom:1px solid var(--b)">'+p.name+(p.isHost?' <span class="pill">مضيف</span>':'')+(p.peerId===myPeerId?' <span class="muted">(أنت)</span>':'')+'</div>'}).join('')||'<p class="muted">لا لاعبين</p>'}
+document.getElementById('btnStartOnline').onclick=function(){if(!isHost)return;var caseId=document.getElementById('olCase').value;var roles=CASES.find(function(c){return c.id===caseId}).roles.slice();for(var i=roles.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=roles[i];roles[i]=roles[j];roles[j]=t}var assignments={};roomPlayers.forEach(function(p,idx){assignments[p.peerId]=roles[idx%roles.length].key});var payload={type:'start',caseId:caseId,assignments:assignments,players:roomPlayers};broadcast(payload);beginOnlineGame(payload)};
+function beginOnlineGame(msg){S.mode='online';S.caseId=msg.caseId;S.assignments=msg.assignments;S.role=msg.assignments[myPeerId];S.phase='intro';S.vote=null;S.votes={};roomPlayers=msg.players||roomPlayers;renderGame();show('game')}
+document.getElementById('leaveOnline').onclick=function(){cleanupPeer();home()};
+function renderLobby(){document.getElementById('playerList').innerHTML=S.players.map(function(p,i){return '<div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--b)"><span>'+(i+1)+'. '+p.name+'</span>'+(i>0?'<button type="button" class="btn-g" data-rm="'+i+'" style="color:var(--d)">حذف</button>':'')+'</div>'}).join('');document.querySelectorAll('[data-rm]').forEach(function(btn){btn.onclick=function(){S.players.splice(+btn.getAttribute('data-rm'),1);renderLobby()}})}
+document.getElementById('addPlayer').onclick=function(){var n=document.getElementById('newPlayer').value.trim();if(!n||S.players.length>=4)return;S.players.push({name:n});document.getElementById('newPlayer').value='';renderLobby()};
+document.getElementById('leaveLobby').onclick=function(){home()};
+document.getElementById('startHotseat').onclick=function(){if(S.players.length<2){alert('أضف لاعبًا');return}S.caseId=document.getElementById('lobbyCase').value;var roles=C().roles.slice();for(var i=roles.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=roles[i];roles[i]=roles[j];roles[j]=t}S.assignments={};S.players.forEach(function(p,idx){S.assignments[p.name]=roles[idx%roles.length].key});S.votes={};S.revealIndex=0;showPass()};
+function showPass(){var p=S.players[S.revealIndex];if(!p){S.phase='intro';renderGame();show('game');return}document.getElementById('passName').textContent=p.name;show('pass')}
+document.getElementById('revealRole').onclick=function(){var p=S.players[S.revealIndex];var role=C().roles.find(function(r){return r.key===S.assignments[p.name]});show('game');document.getElementById('gTitle').textContent=C().title;document.getElementById('gPhase').textContent='خاص — '+p.name;document.getElementById('bar').innerHTML='';document.getElementById('body').innerHTML='<div class="card"><p class="muted">'+p.name+'</p><div style="font-size:1.3rem;font-weight:700;color:var(--g)">'+role.name+'</div><p class="muted">'+role.desc+'</p><div style="margin-top:.7rem;padding:.9rem;border:1px solid var(--b);border-radius:12px;background:rgba(123,92,255,.1)"><p class="muted" style="font-size:.78rem">خاصة</p><p>'+role.priv+'</p></div></div>';document.getElementById('next').textContent='سلّم الجهاز';document.getElementById('next').onclick=function(){S.revealIndex++;if(S.revealIndex<S.players.length)showPass();else{S.phase='intro';document.getElementById('next').onclick=defaultNext;renderGame();show('game')}}};
+function renderRolePick(){var c=C();document.getElementById('caseHint').textContent=c.title;document.getElementById('roleList').innerHTML=c.roles.map(function(r){return '<button type="button" class="opt'+(S.role===r.key?' sel':'')+'" data-k="'+r.key+'"><strong>'+r.name+'</strong><br><span class="muted">'+r.desc+'</span></button>'}).join('');document.querySelectorAll('#roleList .opt').forEach(function(b){b.onclick=function(){S.role=b.getAttribute('data-k');renderRolePick()}})}
+document.getElementById('confirmRole').onclick=function(){if(!S.role){alert('اختر دورًا');return}S.phase='intro';renderGame();show('game')};
+document.getElementById('backHome').onclick=function(){home()};
+function renderBar(){var i=PHASES.indexOf(S.phase);document.getElementById('bar').innerHTML=PHASES.map(function(p,x){return '<div class="dot'+(x<i?' ok':'')+(x===i?' on':'')+'"></div>'}).join('')}
+function roleObj(){return C().roles.find(function(r){return r.key===S.role})||C().roles[0]}
+function renderGame(){var c=C(),r=roleObj();document.getElementById('gTitle').textContent=c.title;document.getElementById('gPhase').textContent='المرحلة: '+PHASE_AR[S.phase]+(S.mode==='online'?' · أونلاين':S.mode==='hotseat'?' · محلي':'');renderBar();var b=document.getElementById('body'),n=document.getElementById('next');n.classList.remove('hidden');n.onclick=defaultNext;
+if(S.phase==='intro'){b.innerHTML='<div class="card" style="text-align:center;padding:1.4rem"><p class="tag">CASE INTRO</p><h3 style="color:var(--g);margin:.5rem 0">'+c.title+'</h3><p class="muted" style="line-height:1.75">'+c.intro+'</p>'+(S.mode==='online'?'<p class="muted" style="margin-top:.7rem">دورك: <strong style="color:var(--g)">'+r.name+'</strong></p><p class="muted" style="font-size:.85rem">'+r.priv+'</p>':'')+'</div>';n.textContent=(S.mode==='hotseat'||S.mode==='online')?'الأدلة':'استلام الدور'}
+else if(S.phase==='roles'){b.innerHTML='<div class="card"><div style="font-size:1.25rem;font-weight:700;color:var(--g)">'+r.name+'</div><p class="muted">'+r.desc+'</p><div style="margin-top:.7rem;padding:.9rem;border-radius:12px;border:1px solid var(--b);background:rgba(123,92,255,.1)"><p class="muted" style="font-size:.78rem">خاصة</p><p>'+r.priv+'</p></div></div>';n.textContent='الأدلة'}
+else if(S.phase==='evidence'){b.innerHTML=c.evidence.map(function(e,i){return '<div class="card"><div class="vid">🎬 '+(i+1)+'</div><strong>'+e.t+'</strong><p class="muted">'+e.d+'</p></div>'}).join('');n.textContent='النقاش'}
+else if(S.phase==='discussion'){b.innerHTML='<div class="card"><p class="muted">ناقش الأدلة</p></div>';n.textContent='التصويت'}
+else if(S.phase==='voting'){if(S.mode==='hotseat'){if(typeof S.votePlayerIndex!=='number')S.votePlayerIndex=0;if(S.votePlayerIndex>=S.players.length){var counts={};Object.keys(S.votes).forEach(function(name){var v=S.votes[name];counts[v]=(counts[v]||0)+1});var winner=null,max=0;Object.keys(counts).forEach(function(k){if(counts[k]>max){max=counts[k];winner=k}});S.vote=winner;S.phase='finale';renderGame();return}var pn=S.players[S.votePlayerIndex].name;b.innerHTML='<div class="card"><p class="muted">تصويت — '+pn+'</p>'+c.votes.map(function(v){return '<button type="button" class="opt" data-id="'+v.id+'">'+v.l+'</button>'}).join('')+'</div>';document.querySelectorAll('#body .opt').forEach(function(x){x.onclick=function(){S.votes[pn]=x.getAttribute('data-id');S.votePlayerIndex++;renderGame()}});n.classList.add('hidden');return}b.innerHTML='<div class="card"><p style="font-weight:600;margin-bottom:.7rem">من المسؤول؟</p>'+c.votes.map(function(v){return '<button type="button" class="opt'+(S.vote===v.id?' sel':'')+'" data-id="'+v.id+'">'+v.l+'</button>'}).join('')+'</div>';document.querySelectorAll('#body .opt').forEach(function(x){x.onclick=function(){S.vote=x.getAttribute('data-id');if(S.mode==='online')broadcast({type:'vote',name:S.user.name,choice:S.vote});renderGame()}});n.textContent='كشف الحقيقة'}
+else if(S.phase==='finale'){var ok=S.vote===c.correct;b.innerHTML='<div class="card" style="text-align:center"><p class="tag">FINALE</p><div style="font-weight:700;font-size:1.2rem;color:'+(ok?'var(--s)':'var(--d)')+'">'+(ok?'صحيحة':'غير صحيحة')+'</div><p class="muted" style="text-align:right;margin-top:.7rem;line-height:1.7">'+c.finale+'</p></div>';n.textContent='الرئيسية'}}
+function defaultNext(){if(S.phase==='voting'&&S.mode!=='hotseat'&&!S.vote){alert('اختر');return}if(S.phase==='finale'){S.user.xp+=50;S.user.pts+=10;if(S.user.xp>=S.user.level*100){S.user.xp-=S.user.level*100;S.user.level++}save();cleanupPeer();S.mode='solo';S.votes={};home();return}if((S.mode==='hotseat'||S.mode==='online')&&S.phase==='intro'){S.phase='evidence';if(S.mode==='online'&&isHost)broadcast({type:'phase',phase:S.phase});renderGame();return}S.phase=PHASES[PHASES.indexOf(S.phase)+1];if((S.mode==='hotseat'||S.mode==='online')&&S.phase==='roles')S.phase='evidence';if(S.phase==='voting')S.votePlayerIndex=0;if(S.mode==='online'&&isHost)broadcast({type:'phase',phase:S.phase,vote:S.vote});renderGame()}
+document.getElementById('next').onclick=defaultNext;
+document.getElementById('exit').onclick=function(){cleanupPeer();home()};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});
+boot();
+</script></body></html>
